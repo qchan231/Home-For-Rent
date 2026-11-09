@@ -44,6 +44,15 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView btnRegister =
                 findViewById(R.id.btnRegister);
+        btnRegister.setOnClickListener(v -> {
+
+                    Intent intent = new Intent(
+                            LoginActivity.this,
+                            RegisterActivity.class
+                    );
+
+                    startActivity(intent);
+                });
 
         // SHARED PREFERENCES
 

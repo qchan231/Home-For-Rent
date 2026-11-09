@@ -11,5 +11,6 @@
     <color name="text_gray">#71809F</color>
     <color name="gray">#A5AEC0</color>
     <color name="red">#EF4444</color>
-
+    <color name="register_background">#FAFAFC</color>
+    <color name="line_gray">#A7A9AE</color>
 </resources>
