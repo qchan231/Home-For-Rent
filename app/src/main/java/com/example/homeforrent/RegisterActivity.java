@@ -11,6 +11,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.homeforrent.network.AuthResponse;
+import com.example.homeforrent.network.RegisterRequest;
+import com.example.homeforrent.network.RetrofitClient;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText edtName;
@@ -30,11 +38,9 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_register);
 
         // ÁNH XẠ VIEW
-
         edtName = findViewById(R.id.edtRegisterName);
         edtPhone = findViewById(R.id.edtRegisterPhone);
         edtEmail = findViewById(R.id.edtRegisterEmail);
@@ -43,225 +49,140 @@ public class RegisterActivity extends AppCompatActivity {
 
         cbTerms = findViewById(R.id.cbTerms);
 
-        btnShowPassword = findViewById(
-                R.id.btnShowRegisterPassword
-        );
+        btnShowPassword = findViewById(R.id.btnShowRegisterPassword);
+        btnShowConfirmPassword = findViewById(R.id.btnShowConfirmPassword);
 
-        btnShowConfirmPassword = findViewById(
-                R.id.btnShowConfirmPassword
-        );
-
-        TextView btnCreate = findViewById(
-                R.id.btnCreateAccount
-        );
-
-        TextView btnBack = findViewById(
-                R.id.btnBack
-        );
-
-        TextView btnGoToLogin = findViewById(
-                R.id.btnGoToLogin
-        );
+        TextView btnCreate = findViewById(R.id.btnCreateAccount);
+        TextView btnBack = findViewById(R.id.btnBack);
+        TextView btnGoToLogin = findViewById(R.id.btnGoToLogin);
 
         // QUAY LẠI
-
         btnBack.setOnClickListener(v -> finish());
-
         btnGoToLogin.setOnClickListener(v -> finish());
 
         // HIỆN / ẨN MẬT KHẨU
-
-        btnShowPassword.setOnClickListener(v -> {
-            togglePassword();
-        });
-
-        btnShowConfirmPassword.setOnClickListener(v -> {
-            toggleConfirmPassword();
-        });
+        btnShowPassword.setOnClickListener(v -> togglePassword());
+        btnShowConfirmPassword.setOnClickListener(v -> toggleConfirmPassword());
 
         // ĐĂNG KÝ
-
-        btnCreate.setOnClickListener(v -> {
-            register();
-        });
+        btnCreate.setOnClickListener(v -> register());
     }
 
     // HIỆN / ẨN MẬT KHẨU
-
     private void togglePassword() {
-
         passwordVisible = !passwordVisible;
-
         int cursor = edtPassword.getSelectionStart();
 
         if (passwordVisible) {
-
             edtPassword.setInputType(
-                    InputType.TYPE_CLASS_TEXT |
-                            InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             );
-
             btnShowPassword.setText("⊘");
-
         } else {
-
             edtPassword.setInputType(
-                    InputType.TYPE_CLASS_TEXT |
-                            InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
             );
-
             btnShowPassword.setText("◉");
         }
 
-        edtPassword.setSelection(
-                Math.max(0, Math.min(cursor,
-                        edtPassword.length()))
-        );
+        edtPassword.setSelection(Math.max(0, Math.min(cursor, edtPassword.length())));
     }
 
     private void toggleConfirmPassword() {
-
         confirmPasswordVisible = !confirmPasswordVisible;
-
         int cursor = edtConfirmPassword.getSelectionStart();
 
         if (confirmPasswordVisible) {
-
             edtConfirmPassword.setInputType(
-                    InputType.TYPE_CLASS_TEXT |
-                            InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             );
-
             btnShowConfirmPassword.setText("⊘");
-
         } else {
-
             edtConfirmPassword.setInputType(
-                    InputType.TYPE_CLASS_TEXT |
-                            InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
             );
-
             btnShowConfirmPassword.setText("◉");
         }
 
-        edtConfirmPassword.setSelection(
-                Math.max(0, Math.min(cursor,
-                        edtConfirmPassword.length()))
-        );
+        edtConfirmPassword.setSelection(Math.max(0, Math.min(cursor, edtConfirmPassword.length())));
     }
 
-    // XỬ LÝ ĐĂNG KÝ
-
+    // XỬ LÝ ĐĂNG KÝ RETROFIT API
     private void register() {
+        String name = edtName.getText().toString().trim();
+        String phone = edtPhone.getText().toString().trim();
+        String email = edtEmail.getText().toString().trim();
+        String password = edtPassword.getText().toString();
+        String confirmPassword = edtConfirmPassword.getText().toString();
 
-        String name = edtName.getText()
-                .toString().trim();
-
-        String phone = edtPhone.getText()
-                .toString().trim();
-
-        String email = edtEmail.getText()
-                .toString().trim();
-
-        String password = edtPassword.getText()
-                .toString();
-
-        String confirmPassword = edtConfirmPassword.getText()
-                .toString();
-
-        // HỌ TÊN
-
+        // VALIDATION
         if (name.isEmpty()) {
-
             edtName.setError("Vui lòng nhập họ tên");
             edtName.requestFocus();
             return;
         }
 
-        // SỐ ĐIỆN THOẠI
-
         if (!phone.matches("^0[0-9]{9,10}$")) {
-
-            edtPhone.setError(
-                    "Số điện thoại không hợp lệ"
-            );
-
+            edtPhone.setError("Số điện thoại không hợp lệ");
             edtPhone.requestFocus();
             return;
         }
 
-        // EMAIL
-
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-
             edtEmail.setError("Email không hợp lệ");
             edtEmail.requestFocus();
             return;
         }
 
-        // MẬT KHẨU
-
         if (password.length() < 6) {
-
-            edtPassword.setError(
-                    "Mật khẩu phải có ít nhất 6 ký tự"
-            );
-
+            edtPassword.setError("Mật khẩu phải có ít nhất 6 ký tự");
             edtPassword.requestFocus();
             return;
         }
 
-        // XÁC NHẬN MẬT KHẨU
-
         if (!password.equals(confirmPassword)) {
-
-            edtConfirmPassword.setError(
-                    "Mật khẩu xác nhận không khớp"
-            );
-
+            edtConfirmPassword.setError("Mật khẩu xác nhận không khớp");
             edtConfirmPassword.requestFocus();
             return;
         }
 
-        // ĐIỀU KHOẢN
-
         if (!cbTerms.isChecked()) {
-
-            Toast.makeText(
-                    this,
-                    "Bạn cần đồng ý với điều khoản sử dụng!",
-                    Toast.LENGTH_SHORT
-            ).show();
-
+            Toast.makeText(this, "Bạn cần đồng ý với điều khoản sử dụng!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        /*
-         * ĐÂY LÀ BƯỚC DEMO.
-         * Chưa lưu tài khoản vào cơ sở dữ liệu.
-         * Sau này sẽ kết nối Firebase hoặc Backend.
-         */
+        // TẠO REQUEST GỬI LÊN SERVER NODE.JS
+        RegisterRequest registerRequest = new RegisterRequest(email, password, name, phone, "user");
 
-        Toast.makeText(
+        // GỌI API QUA RETROFIT
+        RetrofitClient.getApiService().register(registerRequest).enqueue(new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    showRegisterSuccessDialog();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Đăng ký thất bại! Email có thể đã được sử dụng.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
+                Toast.makeText(RegisterActivity.this, "Lỗi kết nối Server: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+    private void showRegisterSuccessDialog() {
+        DialogHelper.show(
                 this,
-                "Thông tin hợp lệ! Đăng ký thành công (demo).",
-                Toast.LENGTH_LONG
-        ).show();
-
-        // QUAY VỀ LOGIN
-
-        Intent intent = new Intent(
-                RegisterActivity.this,
-                LoginActivity.class
-        );
-
-        intent.addFlags(
-                Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_SINGLE_TOP
-        );
-
-        startActivity(intent);
-
-        finish();
+                R.drawable.ic_check_success,
+                "Đăng ký thành công!",
+                "Tài khoản của bạn đã được khởi tạo. Vui lòng đăng nhập để tiếp tục.",
+                "Đăng nhập ngay   ➜",
+                () -> {
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    finish();
+                });
     }
 }

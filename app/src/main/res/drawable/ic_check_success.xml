@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="90dp"
+    android:height="90dp"
+    android:viewportWidth="90"
+    android:viewportHeight="90">
+
+    <!-- Nền tròn mờ màu xanh lá nhạt với viền nhẹ -->
+    <path
+        android:fillColor="#F0FDF4"
+        android:strokeColor="#DCFCE7"
+        android:strokeWidth="1.5"
+        android:pathData="M45,45m-40,0a40,40 0 1,0 80,0a40,40 0 1,0 -80,0" />
+
+    <!-- Dấu tích xanh lá bo tròn -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#12B76A"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M32,45 L41,54 L58,36" />
+</vector>
