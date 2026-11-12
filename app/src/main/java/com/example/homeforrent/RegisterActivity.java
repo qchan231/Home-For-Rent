@@ -19,6 +19,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.widget.ImageView;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText edtName;
@@ -29,8 +31,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private CheckBox cbTerms;
 
-    private TextView btnShowPassword;
-    private TextView btnShowConfirmPassword;
+    private ImageView btnShowPassword;
+    private ImageView btnShowConfirmPassword;
 
     private boolean passwordVisible = false;
     private boolean confirmPasswordVisible = false;
@@ -77,12 +79,12 @@ public class RegisterActivity extends AppCompatActivity {
             edtPassword.setInputType(
                     InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             );
-            btnShowPassword.setText("⊘");
+            btnShowPassword.setContentDescription("Ẩn mật khẩu");
         } else {
             edtPassword.setInputType(
                     InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
             );
-            btnShowPassword.setText("◉");
+            btnShowPassword.setContentDescription("Hiện mật khẩu");
         }
 
         edtPassword.setSelection(Math.max(0, Math.min(cursor, edtPassword.length())));
@@ -96,12 +98,12 @@ public class RegisterActivity extends AppCompatActivity {
             edtConfirmPassword.setInputType(
                     InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             );
-            btnShowConfirmPassword.setText("⊘");
+            btnShowConfirmPassword.setContentDescription("Ẩn xác nhận mật khẩu");
         } else {
             edtConfirmPassword.setInputType(
                     InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
             );
-            btnShowConfirmPassword.setText("◉");
+            btnShowConfirmPassword.setContentDescription("Hiện xác nhận mật khẩu");
         }
 
         edtConfirmPassword.setSelection(Math.max(0, Math.min(cursor, edtConfirmPassword.length())));

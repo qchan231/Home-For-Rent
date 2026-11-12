@@ -50,5 +50,16 @@
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCancel"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_cancel_button"
+            android:textAllCaps="false"
+            android:textColor="#7A8CA9"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

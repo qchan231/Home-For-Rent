@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="invoice_filters">
+        <item>Tất cả</item>
+        <item>Trễ hạn</item>
+        <item>Chưa đóng</item>
+        <item>Đã đóng</item>
+    </string-array>
+</resources>

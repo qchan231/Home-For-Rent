@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="feedback_types">
+        <item>Chọn loại vấn đề</item>
+        <item>Điện</item>
+        <item>Nước</item>
+        <item>Vệ sinh</item>
+        <item>An ninh</item>
+        <item>Khác</item>
+    </string-array>
+</resources>

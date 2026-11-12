@@ -149,14 +149,14 @@
                     android:autofillHints="password"
                     android:padding="0dp"/>
 
-                <TextView
+                <ImageView
                     android:id="@+id/btnShowPassword"
-                    android:layout_width="35dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="◉"
-                    android:textColor="@color/text_gray"
-                    android:textSize="22sp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="12dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_eye"
+                    android:contentDescription="Hiện mật khẩu"
                     android:clickable="true"
                     android:focusable="true"/>
 

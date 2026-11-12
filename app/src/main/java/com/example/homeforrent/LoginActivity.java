@@ -19,13 +19,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import androidx.appcompat.app.AppCompatActivity;
+import android.widget.ImageView;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText edtEmail, edtPassword;
     private CheckBox cbRemember;
-    private TextView btnLogin, btnShowPassword;
+    private TextView btnLogin;
+    private ImageView btnShowPassword;
     private boolean isPasswordVisible = false;
 
     private SharedPreferences preferences;
@@ -83,13 +85,13 @@ public class LoginActivity extends AppCompatActivity {
             edtPassword.setInputType(
                     InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
             );
-            btnShowPassword.setText("◉");
+            btnShowPassword.setContentDescription("Hiện mật khẩu");
             isPasswordVisible = false;
         } else {
             edtPassword.setInputType(
                     InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             );
-            btnShowPassword.setText("⊘");
+            btnShowPassword.setContentDescription("Ẩn mật khẩu");
             isPasswordVisible = true;
         }
 
@@ -149,6 +151,8 @@ public class LoginActivity extends AppCompatActivity {
                             if (auth.getUser() != null) {
                                 editor.putString("userId", auth.getUser().getId());
                                 editor.putString("fullName", auth.getUser().getFullName());
+                                editor.putString("userEmail", auth.getUser().getEmail());
+                                editor.putString("phone", auth.getUser().getPhone());
                                 editor.putString("role", auth.getUser().getRole());
                             }
                             editor.apply();
